@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Hotel Booking System</title>
+    <link rel="stylesheet" href="../styling/styling.css">
+</head>
+<body>
+    <img src="../assets/hotel_banner.png" alt="Hotel Booking System" class="header-image">
+    <div class="container">
+        <h1>Register Account</h1>
+        <div class="auth-form">
+            <form id="registerForm" >
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password:</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                </div>
+                <div id="errorMessage" class="error-message" style="display: none; color: red; margin-bottom: 10px;"></div>
+                <button type="submit">Register</button>
+            </form>
+            <p>Already have an account? <a href="../pages/login.php">Login here</a></p>
+        </div>
+    </div>
+
+    <script>
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const errorDiv = document.getElementById('errorMessage');
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        // Verifică dacă parolele coincid
+        if (password !== confirmPassword) {
+            errorDiv.textContent = 'Passwords do not match!';
+            errorDiv.style.display = 'block';
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('action', 'register');  // Trimite acțiunea de înregistrare
+        formData.append('username', document.getElementById('username').value);
+        formData.append('password', password);
+
+        try {
+            const response = await fetch('http://localhost/hotel_booking_system/server/auth.php', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            console.log(data); // Log pentru a verifica răspunsul de la server
+            
+            if (data.success) {
+                window.location.href = '../pages/login.php';  // Redirect după înregistrare
+            } else {
+                errorDiv.textContent = data.error || 'Registration failed';
+                errorDiv.style.display = 'block';
+            }
+        } catch (error) {
+            console.error('Error:', error);  // Log pentru a verifica eroarea completă
+            errorDiv.textContent = 'An error occurred. Please try again.';
+            errorDiv.style.display = 'block';
+        }
+    });
+    </script>
+</body>
+</html>
