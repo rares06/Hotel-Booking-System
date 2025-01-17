@@ -23,7 +23,9 @@ Technology Stack
 •	Frontend: JavaScript
 •	Database: MySQL
 •	Authentication: session-based authentication, local storage
+
 Contact
 For any inquiries or issues, please contact:
+
 •	Email: popa.i.raresconstantin22@stud.rau.ro
 •	GitHub: rares06
